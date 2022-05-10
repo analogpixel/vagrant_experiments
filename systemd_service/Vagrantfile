@@ -1,0 +1,24 @@
+$script = <<SCRIPT
+cp /vagrant/myservice.service /etc/systemd/system/
+systemctl enable myservice.service
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/centos-7.4"
+  config.vm.hostname = "vagrant.local.net"
+  config.vm.network :private_network, type: "dhcp"
+
+  config.vm.provision "shell", inline: $script
+
+  #config.vm.provision "ansible" do |a|
+  #    a.playbook = "configure.yml"
+  #end
+
+  config.vm.provider :virtualbox do |vb|
+    vb.customize [
+      "modifyvm", :id,
+      "--cpuexecutioncap", "50",
+      "--memory", "256",
+    ]
+  end
+end

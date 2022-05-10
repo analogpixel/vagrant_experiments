@@ -1,0 +1,27 @@
+[Unit]
+Description=local service
+After=network.target
+
+[Service]
+Type=simple
+Environment=USER=prodalm
+Environment=SERVICENAME=alm
+Environment=APPSERVER_CONFIG_HOME=/home/$USER/appserver-config-latest
+Environment=RALLY_SERVER=$USER
+Environment=RALLY_CONFIG=$APPSERVER_CONFIG_HOME/server-configs/$USER.properties
+Environment=SSO_AGENT_CONFIG=/home/$USER/sso/agent-config.txt
+Environment=USER_HOME=/home/$USER
+Environment=ATTEMPTS=30
+Environment=LOGDIR=$USER_HOME/domains/$SERVICENAME/logs
+Environment=PID_DIR=$USER_HOME
+Environment=PIDFILE=$PID_DIR/$SERVICENAME.pid
+Environment=PORT=7001
+Environment=$USER_HOME/.rvm/rubies
+PIDFile=/vagrant/myservice.pid
+Restart=always
+RestartSec=5
+StartLimitIntervalSec=0
+ExecStart=/vagrant/myservice.sh
+
+[Install]
+WantedBy=multi-user.target
